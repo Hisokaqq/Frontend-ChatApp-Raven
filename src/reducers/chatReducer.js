@@ -51,4 +51,3 @@ export const chatDetailsReducer = (state = {
                         return state
     }
 }
-console.log(32)
