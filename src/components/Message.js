@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Avatar } from '@mui/material'
 import Moment from 'react-moment';
+import { decodeText } from './somef';
 
 const Message = ({message, same=false}) => {
   return (
@@ -18,7 +19,7 @@ const Message = ({message, same=false}) => {
                     }
                     
                 <div className="text">
-                    <p>{message.content}</p>
+                    <p>{decodeText(message.content)}</p>
                     <Moment fromNow className="date">{message.timestamp}</Moment>
                 </div>
             </div>

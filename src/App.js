@@ -56,7 +56,6 @@ function App() {
     await dispatch(getChatUsersList(SearchFor));
     if(userId!=null){
       await dispatch(getChat(userId));
-      console.log("eee")
       
     }
     

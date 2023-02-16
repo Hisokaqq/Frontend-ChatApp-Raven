@@ -27,7 +27,7 @@ const MainBox = ({text, setText}) => {
       {userInfo && 
         <StyledBox>
           <>
-            <SideBar text={text} setText={setText} />
+            <SideBar  />
             <Chat  />
           </>
         </StyledBox>

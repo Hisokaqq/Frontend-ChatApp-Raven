@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 
 import IconButton from '@mui/material/IconButton';
@@ -9,62 +9,74 @@ import SendIcon from '@mui/icons-material/Send';
 import { createMessage, getChat } from '../actions/chatActions';
 import { getChatUsersList } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { codeText } from './somef';
 
 const CreateMessage = () => {
-    const disatch = useDispatch()
-    const chatR = useSelector(state => state.chat);
-    const userDetails = useSelector(state => state.userDetails);
-    const SearchFor =  useSelector(state=>state.SearchFor)
-    const { user } = userDetails;
-    const { chat } = chatR;
-    const [text, setText] = useState("")
-    const [id, setId] = useState(null)
-    
-    useEffect(()=>{
-        setText("")
-        setId(chat.id)
+  const dispatch = useDispatch()
+  const chatR = useSelector(state => state.chat);
+  const userDetails = useSelector(state => state.userDetails);
+  const SearchFor = useSelector(state => state.SearchFor)
+  const { user } = userDetails;
+  const { chat } = chatR;
+  const [text, setText] = useState("")
+  const [id, setId] = useState(null)
 
-    },[chat])
-    
-    const handleSubmit =  (event) =>  {
-        event.preventDefault()
-        disatch(createMessage(id, text))
-        disatch(getChat(user.id))
-        disatch(getChatUsersList(SearchFor))
+  useEffect(() => {
+    setId(chat.id)
+  }, [chat])
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    dispatch(createMessage(id, codeText(text)))
+
+    dispatch(getChat(user.id))
+    dispatch(getChatUsersList(SearchFor))
+    setText("")
+  }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      if (text.trim().length > 0) {
+        handleSubmit(event);
       }
-    function handleKeyDown(event) {
-        if (event.keyCode === 13) {
-          handleSubmit(event);
-        }
-      }
-    
+    }
+  }
+
   return (
     <StyledCreateMessage id="myform" onSubmit={handleSubmit}>
-        <div className="searchForm">
-            {/* <input className='input' type="text" placeholder='Write a message...' /> */}
-            <textarea onKeyDown={handleKeyDown} value={text} onChange={(e)=>setText(e.target.value)}  spellCheck="false" className='input' placeholder='write a message...'></textarea>
-        </div>
-        <div className="send">
+      <div className="searchForm">
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyPress={handleKeyPress}
+          spellCheck="false"
+          className='input'
+          placeholder='write a message...'
+        ></textarea>
+      </div>
+      <div className="send">
         <Stack direction="row" spacing={1}>
-                <IconButton  color="primary" sx={{color:"white"}} aria-label="upload picture" component="label">
-                    <input hidden  type="file"  />
-                    <AttachFileIcon />
-                </IconButton>
-                <IconButton  color="primary" sx={{color:"white"}} aria-label="upload picture" component="label">
-                    <input hidden type="file" accept='image/*' />
-                    <PhotoCamera />
-                </IconButton>
-                <button disabled={text==""} type="submit" form="myform"  style={{all:"unset"}}>
-                <IconButton disabled={text==""} color="primary" sx={{color:"white"}} aria-label="upload picture" component="label">
-                    <SendIcon style={{transition:"all .3s"}} sx={{color:`${text=="" ? "#909090" : "#fff"}`}}/>
-                </IconButton>
-                </button>
+          <IconButton color="primary" sx={{ color: "white" }} aria-label="upload picture" component="label">
+            <input hidden type="file" />
+            <AttachFileIcon />
+          </IconButton>
+          <IconButton color="primary" sx={{ color: "white" }} aria-label="upload picture" component="label">
+            <input hidden type="file" accept='image/*' />
+            <PhotoCamera />
+          </IconButton>
+          <button disabled={!text.trim().length} type="submit" form="myform" style={{ all: "unset" }}>
+            <IconButton disabled={!text.trim().length} color="primary" sx={{ color: "white" }} aria-label="upload picture" component="label">
+              <SendIcon style={{ transition: "all .3s" }} sx={{ color: `${!text.trim().length ? "#909090" : "#fff"}` }} />
+            </IconButton>
+          </button>
         </Stack>
-
-        </div>
+      </div>
     </StyledCreateMessage>
   )
 }
+
+
 
 const StyledCreateMessage = styled.form`
     z-index: 2;

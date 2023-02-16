@@ -3,6 +3,7 @@ import styled from  'styled-components';
 import NavBar from './NavBar';
 import SearchBar from './SearchBar';
 import UsersList from './UsersList';
+import CreateMessage from './CreateMessage';
 const SideBar = ({text, setText}) => {
   
   return (

@@ -15,12 +15,10 @@ const User = ({userI, active, setActive, index, size}) => {
     await setActive(index)
     await dispatch(getUserDetails(userI.id))
   }
-  useEffect(() => {
-    // setActive(userI.id == user.id)
-  }, [userI.id, user.id]);
+  
   
   return (
-    <StyledUser props={active==index} onClick={OpenUserHandler}>
+    <StyledUser props={user.id==userI.id} onClick={OpenUserHandler}>
       <Avatar sx={{ width: size, height: size }} alt={userI.username} src={userI.profile.avatar} ><span style={{textTransform: "uppercase" }}>{userI.username.charAt(0)}</span></Avatar>
       
       <div className="name_chat">
@@ -46,6 +44,10 @@ const StyledUser = styled.div`
   position: relative;
   border-bottom: .4px solid #a7a7a7;
   background-color: ${props => props.props ? "#1E1E1E" : "transparent"};
+  cursor: pointer;
+  &:hover{
+    background-color: ${props => !props.props ? "#4a4a4a" : "#1E1E1E"};
+  }
   .name_chat{
     padding: .1rem;
     width: 100%;
