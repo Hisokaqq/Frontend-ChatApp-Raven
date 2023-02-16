@@ -65,9 +65,7 @@ export const userLoginReducer = (state = {
 }
 
 export const userRegisterReducer = (state = {
-    userInfoR: {
-
-    }
+    userInfoR: null
 }, action) => {
     switch (action.type) {
         case USER_REGISTER_REQUEST:
@@ -80,7 +78,7 @@ export const userRegisterReducer = (state = {
                 }
                 case USER_REGISTER_FAIL:
                     return {
-                        loading: false, error: action.payload
+                        loading: false, error: action.payload,
                     }
 
                     default:

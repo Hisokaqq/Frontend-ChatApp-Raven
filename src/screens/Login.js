@@ -2,41 +2,56 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/userActions';
+import background from "../images/background.png"
+import ErrorMessage from '../components/ErrorMessage';
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-
+    const [message, setMessage] = useState(null)
+    const [open, setOpen] = useState(false);
+    const userLogin = useSelector(state=>state.userLogin)
+    const {userInfo, error} = userLogin
     const submitHandler = async (e) => {
         e.preventDefault();
-        await dispatch(login(username, password,));
-        navigate("/");
-      };
-      
+        await dispatch(login(username, password));
+        if (userInfo==null) {
+          console.log(open);
+          setMessage("wrong credentials were given");
+          setOpen(true);
+        } 
+        else{
+            navigate("/")
+        }
+    };
+    
   return (
     <StyledLogin>
-        
+        <ErrorMessage open={open} setOpen={setOpen} message={message} type={"error"}/>
         <div onSubmit={submitHandler} className="login">
             <p>Login</p>
             <form >
                 
                 <label htmlFor="text">Username</label>
-                <input value={username} onChange={(e)=>setUsername(e.target.value)} placeholder='enter your username' type="text" />
+                <input required value={username} onChange={(e)=>setUsername(e.target.value)} placeholder='enter your username' type="text" />
                 
-                <label htmlFor="password">Password</label>
-                <input value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='enter your password' type="password" />
+                <label  htmlFor="password">Password</label>
+                <input required value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='enter your password' type="password" />
                 <Link to={"/register"}>Have no accout?</Link>
                 <Button type='submit' variant="outlined"  >Login</Button>
             </form>
         </div>
+
     </StyledLogin>
   )
 }
 
 const StyledLogin = styled.div`
+     background-image: url(${background});
+        background-size: cover;
     width: 100% ;
     height: 100vh;
     display: flex;
@@ -49,7 +64,7 @@ const StyledLogin = styled.div`
         height: fit-content;
         overflow: scroll;
         padding: 2rem;
-        background-color: #282828;
+        background-color: rgba(40,40,40, .9);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -69,7 +84,7 @@ const StyledLogin = styled.div`
             }
             input{
                 margin-top: .3rem;
-                background-color: rgba(0,0,0,.3);
+                background-color: rgba(0,0,0,.7);
 
                 border: none;
                 color: #fff;
@@ -83,13 +98,18 @@ const StyledLogin = styled.div`
             align-self: center;
             margin-left: .8rem;
             color: #282828;
-            background-color: white;
+            
             font-size: 10px;
             padding: .4rem 1rem;
             border-radius: 5px;
             width: 4rem;
             border: none;
             cursor: pointer;
+
+            background-color: rgba(255,255,255, .9);
+            :hover{
+                background-color: rgba(255,255,255, .7);
+            }
         }
         a{
             font-size: .8rem;

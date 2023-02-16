@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../actions/userActions';
 import ErrorMessage from '../components/ErrorMessage';
+import background from "../images/background.png"
 const Register = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -19,23 +20,20 @@ const Register = () => {
     const userLogin = useSelector(state=>state.userLogin)
     const {userInfo} = userLogin
     const location = useLocation()
-    useEffect(()=>{
-        if(userInfo){
-        }
-    },[location.pathname, navigate])
-
-    const submitHandler = (e) => {
+    
+      
+    const submitHandler = async (e) => {
         e.preventDefault();
         if (password === rePassword) {
-            dispatch(register(username, email, password));
-            if (!error && userInfoR) {
-              setOpen(false);
-            }
-          if(error, !userInfo){
-            console.log("32222");
+            await dispatch(register(username, email, password));
+            console.log(userInfoR)
+            if(userInfoR==null){
+            
             setOpen(true);
-            // setMessage("user with this username already exists");
-            setMessage(error);
+            setMessage("this username is taken");
+        }
+        else{
+            navigate("/")
         }
         } else {
           setOpen(true);
@@ -72,6 +70,8 @@ const Register = () => {
 }
 
 const Styledregister = styled.div`
+ background-image: url(${background});
+        background-size: cover;
     width: 100% ;
     height: 100vh;
     display: flex;
@@ -84,7 +84,7 @@ const Styledregister = styled.div`
         height: fit-content;
         overflow: scroll;
         padding: 2rem;
-        background-color: #282828;
+        background-color: rgba(40,40,40, .9);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -104,7 +104,7 @@ const Styledregister = styled.div`
             }
             input{
                 margin-top: .3rem;
-                background-color: rgba(0,0,0,.3);
+                background-color: rgba(0,0,0,.7);
 
                 border: none;
                 color: #fff;
@@ -125,6 +125,10 @@ const Styledregister = styled.div`
             width: 4rem;
             border: none;
             cursor: pointer;
+            background-color: rgba(255,255,255, .9);
+            :hover{
+                background-color: rgba(255,255,255, .7);
+            }
         }
         a{
             font-size: .8rem;

@@ -4,6 +4,8 @@ import Avatar from '@mui/material/Avatar';
 import { logout } from '../actions/userActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import raven from "../images/logo.ico"
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     const dispatch = useDispatch()
@@ -16,8 +18,9 @@ const NavBar = () => {
       }
   return (
     <StyledNavBar>
-        
-        <span className='logo'>Logo</span>
+        <Link to="/">
+            <Avatar sx={{ width: 64, height: 64 }} alt="logo" src={raven} />
+        </Link>
         <div className='user'>
             <div className="info">
             <Avatar alt="Remy Sharp" src={userInfo.profile.avatar} sx={{ width: 34, height: 34 }}>
@@ -37,7 +40,7 @@ const StyledNavBar = styled.div`
     background-color: #1E1E1E;
     align-items: center;
     height: 2rem;
-    padding: 0.74rem;
+    padding: 0.74rem 0.74rem 0.74rem 0;
     justify-content: space-between;
 
     .logo{
